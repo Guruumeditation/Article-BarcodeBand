@@ -1,0 +1,66 @@
+﻿<Page x:Class="BarcodeBand.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:converters="using:BarcodeBand.Converters"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <converters:StringToBitmapSourceConverter x:Key="StringToBitmapSourceConverter" />
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+
+        <Style x:Key="MyItemContainerStyle"
+               TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Select a movie"
+                   FontWeight="Bold"
+                   FontSize="48"
+                   HorizontalAlignment="Center"
+                   Margin="10" />
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Movies}"
+                  ItemContainerStyle="{StaticResource MyItemContainerStyle}"
+                  IsItemClickEnabled="True"
+                  ItemClick="ListViewBase_OnItemClick"
+                  Name="MovieListView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Center">
+                        <Image Source="{Binding Poster,Converter={StaticResource StringToBitmapSourceConverter}}"
+                               HorizontalAlignment="Center"
+                               Width="100" />
+                        <TextBlock Text="{Binding Title}"
+                                   HorizontalAlignment="Center"
+                                   FontWeight="Bold" />
+                        <TextBlock Text="{Binding Time,Converter={StaticResource DateTimeToStringConverter}}"
+                                   FontStyle="Italic"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.RowSpan="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Orientation="Vertical"
+                    Name="ProgessStackPanel">
+            <ProgressRing IsActive="{Binding IsBusy}"
+                          Width="90" Height="90" />
+            <TextBlock Text="{Binding Message}"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       FontSize="20" />
+        </StackPanel>
+
+    </Grid>
+</Page>
